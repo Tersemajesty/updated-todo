@@ -36,6 +36,7 @@ const TodoList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [swipedTask, setSwipedTask] = useState(null);
   const [swipeOffset, setSwipeOffset] = useState(0);
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const toggleTask = (id) => {
     setTasks(
@@ -117,18 +118,25 @@ const TodoList = () => {
       </div >
       <div className="header-container1">
         <div className="div">
-          <h1 className="h1">health</h1>
-          <h1 className="h2">Work</h1>
+          <h1 className={`h1 ${activeCategory === "HEALTH" ? "active" : ""}`}
+          onClick={()=> setActiveCategory("HEALTH")}>health</h1>
+          <h1 className={`h1 ${activeCategory === "WORK" ? "active" : ""}`}
+          onClick={()=> setActiveCategory("WORK")}>Work</h1>
         </div>
         <div className="DIV1">
-            <h1 className="h3">Mental-health</h1>
-        <h1 className="h4">orders</h1> 
+            <h1 className={`h1 ${activeCategory === "MENTAL HEALTH" ? "active" : ""}`}
+            onClick={()=> setActiveCategory("MENTAL HEALTH")}>Mental-health</h1>
+        <h1 className={`h1 ${activeCategory === "ORDERS" ? "active" : ""}`}
+        onClick={()=> setActiveCategory("ORDERS")}>orders</h1> 
         </div>
       </div>
 
       {/* Task List */}
       <div className="task-list">
-        {tasks.map((task) => (
+        {tasks.filter((task) =>
+          activeCategory === "All" ? true: task.category === activeCategory
+        )
+        .map((task) => (
           <div key={task.id} className="task-item">
             <div
               className="task-content"

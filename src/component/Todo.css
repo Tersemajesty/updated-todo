@@ -27,9 +27,19 @@
     flex-direction: column;
     align-items: center;
     height: 255px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
     width: 100%;
     /* background: pink; */
   }
+
+  .header-container1 h1.active {
+  font-weight: bold;
+  opacity: 1;
+  color: #333;
+  border-bottom: 2px solid #000;
+}
 
   .div {
     height: 50%;
