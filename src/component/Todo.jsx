@@ -1,8 +1,8 @@
-import { useState } from "react"
-import NewTaskModal from "./new-task-modal"
-import "./Todo.css"
+import { useState } from "react";
+import NewTaskmodal from "../component/NewTaskmodal";
+import "./Todo.css";
 
-const TodoList =() =>{
+const TodoList = () => {
   const [tasks, setTasks] = useState([
     {
       id: "1",
@@ -30,13 +30,17 @@ const TodoList =() =>{
       category: "HEALTH",
       time: "6:00 AM",
     },
-  ])
+  ]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleTask = (id) => {
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)))
-  }
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
 
   const addTask = (task) => {
     const newTask = {
@@ -45,16 +49,16 @@ const TodoList =() =>{
       completed: false,
       category: task.category,
       time: "6:00 AM",
-    }
-    setTasks([...tasks, newTask])
-  }
+    };
+    setTasks([...tasks, newTask]);
+  };
 
   const getCurrentDate = () => {
-    const today = new Date()
-    const day = today.getDate()
-    const month = today.toLocaleString("default", { month: "short" })
-    return `${day} ${month}`
-  }
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.toLocaleString("default", { month: "short" });
+    return `${day} ${month}`;
+  };
 
   return (
     <div className="todo-container">
@@ -78,10 +82,21 @@ const TodoList =() =>{
               />
               <div className="task-details">
                 <div className="task-header">
-                  <span className={`task-title ${task.completed ? "completed" : ""}`}>{task.title}</span>
+                  <span
+                    className={`task-title ${
+                      task.completed ? "completed" : ""
+                    }`}
+                  >
+                    {task.title}
+                  </span>
                   {task.time && (
                     <div className="task-time">
-                      <svg className="clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <svg
+                        className="clock-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                      >
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12,6 12,12 16,14" />
                       </svg>
@@ -89,7 +104,13 @@ const TodoList =() =>{
                     </div>
                   )}
                 </div>
-                <div className={`task-category ${task.category.toLowerCase().replace(" ", "-")}`}>{task.category}</div>
+                <div
+                  className={`task-category ${task.category
+                    .toLowerCase()
+                    .replace(" ", "-")}`}
+                >
+                  {task.category}
+                </div>
               </div>
             </div>
           </div>
@@ -98,15 +119,24 @@ const TodoList =() =>{
 
       {/* Add Task Button */}
       <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
-        <svg className="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <svg
+          className="plus-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </button>
 
       {/* New Task Modal */}
-      <NewTaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={addTask} />
+      <NewTaskmodal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={addTask}
+      />
     </div>
-  )
-}
-export default TodoList
+  );
+};
+export default TodoList;

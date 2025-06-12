@@ -3,7 +3,7 @@
 import { useState } from "react"
 import "./new-task-modal.css"
 
-const NewTaskModal=({ isOpen, onClose, onSave })=> {
+const NewTaskmodal=({ isOpen, onClose, onSave })=> {
   const [taskTitle, setTaskTitle] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
   const [addSubtask, setAddSubtask] = useState(false)
@@ -94,4 +94,4 @@ const NewTaskModal=({ isOpen, onClose, onSave })=> {
     </div>
   )
 }
-export default NewTaskModal
+export default NewTaskmodal
