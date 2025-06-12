@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import NewTaskmodal from "../component/NewTaskmodal";
 import "./Todo.css";
@@ -33,6 +34,8 @@ const TodoList = () => {
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [swipedTask, setSwipedTask] = useState(null);
+  const [swipeOffset, setSwipeOffset] = useState(0);
 
   const toggleTask = (id) => {
     setTasks(
@@ -53,6 +56,49 @@ const TodoList = () => {
     setTasks([...tasks, newTask]);
   };
 
+  const handleTouchStart = (e, taskId) => {
+    const touch = e.touches[0];
+    setSwipedTask({
+      id: taskId,
+      startX: touch.clientX,
+      startY: touch.clientY,
+      currentX: touch.clientX,
+    });
+  };
+
+  const handleTouchMove = (e, taskId) => {
+    if (!swipedTask || swipedTask.id !== taskId) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - swipedTask.startX;
+    const deltaY = Math.abs(touch.clientY - swipedTask.startY);
+
+    // Only allow horizontal swipes
+    if (deltaY > 30) return;
+
+    // Only allow left swipes (negative deltaX)
+    if (deltaX < 0) {
+      setSwipeOffset(Math.max(deltaX, -100));
+    }
+  };
+
+  const handleTouchEnd = (taskId) => {
+    if (!swipedTask || swipedTask.id !== taskId) return;
+
+    // If swiped more than 60px, delete the task
+    if (swipeOffset < -60) {
+      deleteTask(taskId);
+    }
+
+    // Reset swipe state
+    setSwipedTask(null);
+    setSwipeOffset(0);
+  };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
   const getCurrentDate = () => {
     const today = new Date();
     const day = today.getDate();
@@ -63,17 +109,41 @@ const TodoList = () => {
   return (
     <div className="todo-container">
       {/* Header */}
+
       <div className="header">
         <h1 className="header-title">
           Today <span className="header-date">{getCurrentDate()}</span>
         </h1>
+      </div >
+      <div className="header-container1">
+        <div className="div">
+          <h1 className="h1">health</h1>
+          <h1 className="h2">Work</h1>
+        </div>
+        <div className="DIV1">
+            <h1 className="h3">Mental-health</h1>
+        <h1 className="h4">orders</h1> 
+        </div>
       </div>
 
       {/* Task List */}
       <div className="task-list">
         {tasks.map((task) => (
           <div key={task.id} className="task-item">
-            <div className="task-content">
+            <div
+              className="task-content"
+              style={{
+                transform:
+                  swipedTask?.id === task.id
+                    ? `translateX(${swipeOffset}px)`
+                    : "translateX(0)",
+                transition:
+                  swipedTask?.id === task.id ? "none" : "transform 0.3s ease",
+              }}
+              onTouchStart={(e) => handleTouchStart(e, task.id)}
+              onTouchMove={(e) => handleTouchMove(e, task.id)}
+              onTouchEnd={() => handleTouchEnd(task.id)}
+            >
               <input
                 type="checkbox"
                 checked={task.completed}
@@ -113,6 +183,20 @@ const TodoList = () => {
                 </div>
               </div>
             </div>
+            {swipedTask?.id === task.id && swipeOffset < -20 && (
+              <div className="delete-indicator">
+                <svg
+                  className="delete-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <polyline points="3,6 5,6 21,6"></polyline>
+                  <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                </svg>
+                Delete
+              </div>
+            )}
           </div>
         ))}
       </div>
