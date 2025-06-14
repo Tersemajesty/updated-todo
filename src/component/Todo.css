@@ -52,7 +52,7 @@
   .h1 {
     height: 100px;
     width: 100%;
-    background: rgb(242,244,254);
+    background:rgb(242,244,254);
     border-radius: 10px;
     display: flex;
     align-items: center;

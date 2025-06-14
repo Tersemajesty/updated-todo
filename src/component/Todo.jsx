@@ -115,98 +115,117 @@ const TodoList = () => {
         <h1 className="header-title">
           Today <span className="header-date">{getCurrentDate()}</span>
         </h1>
-      </div >
+      </div>
       <div className="header-container1">
         <div className="div">
-          <h1 className={`h1 ${activeCategory === "HEALTH" ? "active" : ""}`}
-          onClick={()=> setActiveCategory("HEALTH")}>health</h1>
-          <h1 className={`h1 ${activeCategory === "WORK" ? "active" : ""}`}
-          onClick={()=> setActiveCategory("WORK")}>Work</h1>
+          <h1
+            className={`h1 ${activeCategory === "HEALTH" ? "active" : ""}`}
+            onClick={() => setActiveCategory("HEALTH")}
+          >
+            health
+          </h1>
+          <h1
+            className={`h2 ${activeCategory === "WORK" ? "active" : ""}`}
+            onClick={() => setActiveCategory("WORK")}
+          >
+            Work
+          </h1>
         </div>
         <div className="DIV1">
-            <h1 className={`h1 ${activeCategory === "MENTAL HEALTH" ? "active" : ""}`}
-            onClick={()=> setActiveCategory("MENTAL HEALTH")}>Mental-health</h1>
-        <h1 className={`h1 ${activeCategory === "ORDERS" ? "active" : ""}`}
-        onClick={()=> setActiveCategory("ORDERS")}>orders</h1> 
+          <h1
+            className={`h3 ${
+              activeCategory === "MENTAL HEALTH" ? "active" : ""
+            }`}
+            onClick={() => setActiveCategory("MENTAL HEALTH")}
+          >
+            Mental-health
+          </h1>
+          <h1
+            className={`h4 ${activeCategory === "ALL" ? "active" : ""}`}
+            onClick={() => setActiveCategory("All")}
+          >
+            All
+          </h1>
         </div>
       </div>
 
       {/* Task List */}
       <div className="task-list">
-        {tasks.filter((task) =>
-          activeCategory === "All" ? true: task.category === activeCategory
-        )
-        .map((task) => (
-          <div key={task.id} className="task-item">
-            <div
-              className="task-content"
-              style={{
-                transform:
-                  swipedTask?.id === task.id
-                    ? `translateX(${swipeOffset}px)`
-                    : "translateX(0)",
-                transition:
-                  swipedTask?.id === task.id ? "none" : "transform 0.3s ease",
-              }}
-              onTouchStart={(e) => handleTouchStart(e, task.id)}
-              onTouchMove={(e) => handleTouchMove(e, task.id)}
-              onTouchEnd={() => handleTouchEnd(task.id)}
-            >
-              <input
-                type="checkbox"
-                checked={task.completed}
-                onChange={() => toggleTask(task.id)}
-                className="task-checkbox"
-              />
-              <div className="task-details">
-                <div className="task-header">
-                  <span
-                    className={`task-title ${
-                      task.completed ? "completed" : ""
-                    }`}
+        {tasks
+          .filter((task) =>
+            activeCategory === "All" ? true : task.category === activeCategory
+          )
+          .map((task) => (
+            <div key={task.id} className="task-item">
+              <div
+                className="task-content"
+                style={{
+                  transform:
+                    swipedTask?.id === task.id
+                      ? `translateX(${swipeOffset}px)`
+                      : "translateX(0)",
+                  transition:
+                    swipedTask?.id === task.id ? "none" : "transform 0.3s ease",
+                }}
+                onTouchStart={(e) => handleTouchStart(e, task.id)}
+                onTouchMove={(e) => handleTouchMove(e, task.id)}
+                onTouchEnd={() => handleTouchEnd(task.id)}
+              >
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleTask(task.id)}
+                  className="task-checkbox"
+                />
+                <div className="task-details">
+                  <div className="task-header">
+                    <span
+                      className={`task-title ${
+                        task.completed ? "completed" : ""
+                      }`}
+                    >
+                      {task.title}
+                    </span>
+                    {task.time && (
+                      <div className="task-time">
+                        <svg
+                          className="clock-icon"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <polyline points="12,6 12,12 16,14" />
+                        </svg>
+                        {task.time}
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    className={`task-category ${task.category
+                      .toLowerCase()
+                      .replace(" ", "-")}`}
                   >
-                    {task.title}
-                  </span>
-                  {task.time && (
-                    <div className="task-time">
-                      <svg
-                        className="clock-icon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12,6 12,12 16,14" />
-                      </svg>
-                      {task.time}
-                    </div>
-                  )}
-                </div>
-                <div
-                  className={`task-category ${task.category
-                    .toLowerCase()
-                    .replace(" ", "-")}`}
-                >
-                  {task.category}
+                    {task.category}
+                  </div>
                 </div>
               </div>
+              {swipedTask?.id === task.id && swipeOffset < -20 && (
+                <div className="delete-indicator">
+                  <svg
+                    className="delete-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <polyline points="3,6 5,6 21,6"></polyline>
+                    <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                  </svg>
+                  Delete
+                </div>
+              )}
             </div>
-            {swipedTask?.id === task.id && swipeOffset < -20 && (
-              <div className="delete-indicator">
-                <svg
-                  className="delete-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <polyline points="3,6 5,6 21,6"></polyline>
-                  <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
-                </svg>
-                Delete
-              </div>
-            )}
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* Add Task Button */}

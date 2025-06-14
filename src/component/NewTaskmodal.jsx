@@ -7,6 +7,7 @@ const NewTaskmodal=({ isOpen, onClose, onSave })=> {
   const [taskTitle, setTaskTitle] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
   const [addSubtask, setAddSubtask] = useState(false)
+  const [subtaskTime, setSubtaskTime] = useState("")
 
   const categories = ["HEALTH", "WORK", "MENTAL HEALTH"]
 
