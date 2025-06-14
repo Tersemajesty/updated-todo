@@ -52,7 +52,7 @@ const TodoList = () => {
       title: task.title,
       completed: false,
       category: task.category,
-      time: "6:00 AM",
+      time: task.hasSubtask ? task.subtaskTime : null,
     };
     setTasks([...tasks, newTask]);
   };
